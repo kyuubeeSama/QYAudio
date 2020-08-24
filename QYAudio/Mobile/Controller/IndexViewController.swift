@@ -33,28 +33,8 @@ class IndexViewController: BaseViewController,UIScrollViewDelegate {
     }
 
     func setupMediaPLayer() {
-        // 正常ape文件
-//        let url = Bundle.main.url(forResource: "半岛铁盒", withExtension: "ape")
-    // 正常flac文件
-//        let url = Bundle.main.url(forResource: "1973", withExtension: "flac")
-    // mp4 强改mp3文件
-//        let url = Bundle.main.url(forResource: "宇宙人", withExtension: "mp3")
-    // 正常mp3 文件
-//    let url = Bundle.main.url(forResource: "Ost_Dnevnoy_dozor_-_Final_instrumental", withExtension: "mp3")
-    // 线上测试文件
-//        let url = URL.init(string: "https://streams.videolan.org/streams/mp4/Mr_MrsSmith-h264_aac.mp4")
-//        mediaPlayer.drawable = audioView
-//        mediaPlayer.media = VLCMedia(url: url!)
-//        mediaPlayer.play()
     }
-
-//    lazy var player:AVPlayer = {
-////        let url = Bundle.main.url(forResource: "半岛铁盒", withExtension: "ape")
-//        let url = Bundle.main.url(forResource: "1973", withExtension: "flac")
-////        let url = Bundle.main.url(forResource: "宇宙人", withExtension: "mp3")
-//        let player = AVPlayer.init(url: url!)
-//        return player
-//    }()
+    
     func setNav(){
         
         self.navigationItem.titleView = titleView
@@ -95,12 +75,7 @@ class IndexViewController: BaseViewController,UIScrollViewDelegate {
         let qingtingTable = QingtingAudioTableView.init(frame: CGRect(x: screenW, y: 0, width: screenW, height: scrollView.frame.size.height), style: .plain)
         scrollView.addSubview(qingtingTable)
         self.view.addSubview(audioView)
-//        QTOpenSDK.defaultService()?.requestRadioChannelList(withPage: 1, success: { (result) in
-//            qingtingTable.listArr = result?.items as! [QTORadioChannel]
-//            qingtingTable.reloadData()
-//        }, failed: { (error) in
-//            print(error)
-//        })
+        
         var categoryArr:[QTORadioCategory] = []
         QTOpenSDK.defaultService()?.requestRadioCategories(success: { (result) in
             if let listArr = result?.regionCategories{
@@ -123,8 +98,6 @@ class IndexViewController: BaseViewController,UIScrollViewDelegate {
                     print(model.title);
                 }
             }
-            
-
         }, failed: { (error) in
             print(error)
         })

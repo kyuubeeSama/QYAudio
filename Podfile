@@ -24,7 +24,7 @@ pod 'SideMenu'
 #蜻蜓fm
   pod 'QTOpenSDK'
 # 暗黑模式
-  pod 'FluentDarkModeKit'
+ pod 'FluentDarkModeKit'
 #蓝牙
 #   pod 'BabyBluetooth'
 end
