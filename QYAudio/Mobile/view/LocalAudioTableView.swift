@@ -10,12 +10,21 @@ import UIKit
 
 class LocalAudioTableView: UITableView,UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate {
     
-    var listArr:Array<LocalAudioModel> = []
+    var listArr:Array<LocalAudioModel>?{
+        didSet{
+            self.reloadData()
+        }
+    }
+    
+    var cellItemDidselected:((_ indexPath:IndexPath)->())?
     
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
         self.delegate = self
         self.dataSource = self
+        self.estimatedRowHeight = 0
+        self.estimatedSectionFooterHeight = 0
+        self.estimatedSectionHeaderHeight = 0
     }
     
     required init?(coder: NSCoder) {
@@ -30,18 +39,20 @@ class LocalAudioTableView: UITableView,UITableViewDelegate,UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        listArr.count
+        listArr!.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let model = self.listArr[indexPath.row]
+        let model = self.listArr![indexPath.row]
         let cell = UITableViewCell.init(style: .default, reuseIdentifier: "cell")
         cell.textLabel?.text = model.fileName
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        if(cellItemDidselected != nil){
+            cellItemDidselected!(indexPath)
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

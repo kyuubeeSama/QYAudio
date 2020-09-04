@@ -14,8 +14,13 @@ class IndexViewController: BaseViewController,UIScrollViewDelegate {
     
     let scrollView = UIScrollView.init()
     let titleView = IndexTitleView.init(frame: CGRect(x: 0, y: 0, width: 200, height: 40))
-    var audioView = AudioView.init(frame: CGRect(x: screenW-60, y: screenH-200, width: 60, height: 60))
-
+    
+    lazy var audioView: AudioView = {
+        let audioView = AudioView.init(frame: CGRect(x: screenW-60, y: screenH-200, width: 60, height: 60))
+        audioView.backgroundColor = .red
+        return audioView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -29,14 +34,12 @@ class IndexViewController: BaseViewController,UIScrollViewDelegate {
                 
             }
         }
+        print(FileTool.getDocumentPath())
         self .makeUI()
+        self.view.addSubview(audioView)
     }
 
-    func setupMediaPLayer() {
-    }
-    
     func setNav(){
-        
         self.navigationItem.titleView = titleView
         titleView.titleBtnBlock = { index in
             self.scrollView.contentOffset = CGPoint(x: Int(screenW)*index, y: 0)
@@ -65,30 +68,39 @@ class IndexViewController: BaseViewController,UIScrollViewDelegate {
         scrollView.frame = CGRect(x: 0, y: top_height, width: screenW, height: screenH-(top_height))
         scrollView.contentSize = CGSize(width:screenW*2, height: screenH-(top_height))
         scrollView.isPagingEnabled = true
+        scrollView.bounces = false
         self.view.addSubview(scrollView)
         // 本地音乐文件列表
         let localAudioTable = LocalAudioTableView.init(frame: CGRect(x: 0, y: 0, width: screenW, height: scrollView.frame.size.height), style: .plain)
         scrollView.addSubview(localAudioTable)
-        localAudioTable.listArr = FileTool.getAudioFileList()
-        localAudioTable.reloadData()
+        let localmusicArr = FileTool.getAudioFileList()
+        localAudioTable.listArr = localmusicArr
+        localAudioTable.cellItemDidselected = { indexPath in
+            // 点击事件
+            // TODO:播放音乐
+            let model:LocalAudioModel = localmusicArr[indexPath.row]
+            let playerItem:AVPlayerItem = AVPlayerItem.init(url: URL.init(fileURLWithPath: model.filePath!))
+            self.audioView.player.replaceCurrentItem(with: playerItem)
+            self.audioView.player.play()
+            self.audioView.player.volume = 0.1
+        }
         // 蜻蜓fm列表
-        let qingtingTable = QingtingAudioTableView.init(frame: CGRect(x: screenW, y: 0, width: screenW, height: scrollView.frame.size.height), style: .plain)
-        scrollView.addSubview(qingtingTable)
-        self.view.addSubview(audioView)
-        
-        var categoryArr:[QTORadioCategory] = []
-        QTOpenSDK.defaultService()?.requestRadioCategories(success: { (result) in
-            if let listArr = result?.regionCategories{
-//                listarray 中保存的是省份列表
-                categoryArr = listArr;
-                for model:QTORadioCategory in listArr {
-                    print(model.name as Any)
-                    self.getRadioList(categoryId: model.categoryId, page: 1)
-                }
-            }
-        }, failed: { (error) in
-            print(error as Any)
-        })
+//        let qingtingTable = QingtingAudioTableView.init(frame: CGRect(x: screenW, y: 0, width: screenW, height: scrollView.frame.size.height), style: .plain)
+//        scrollView.addSubview(qingtingTable)
+//
+//        var categoryArr:[QTORadioCategory] = []
+//        QTOpenSDK.defaultService()?.requestRadioCategories(success: { (result) in
+//            if let listArr = result?.regionCategories{
+////                listarray 中保存的是省份列表
+//                categoryArr = listArr;
+//                for model:QTORadioCategory in listArr {
+//                    print(model.name as Any)
+//                    self.getRadioList(categoryId: model.categoryId, page: 1)
+//                }
+//            }
+//        }, failed: { (error) in
+//            print(error as Any)
+//        })
     }
     
     func getRadioList(categoryId:Int,page:Int){
@@ -109,10 +121,16 @@ class IndexViewController: BaseViewController,UIScrollViewDelegate {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        print(scrollView.contentOffset.x)
+        if scrollView.contentOffset.y<=0 {
+            scrollView.contentOffset.y = 0
+        }
         if scrollView.contentOffset.x>=screenW {
             titleView.index = 1
+            scrollView.contentOffset.x = screenW
         }else if scrollView.contentOffset.x == 0{
             titleView.index = 0
+            scrollView.contentOffset.x = 0
         }
     }
       

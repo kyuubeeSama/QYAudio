@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import AVFoundation
 class FileTool: NSObject {
     /// 获取document文件夹
     static func getDocumentPath()->String{
@@ -39,20 +39,17 @@ class FileTool: NSObject {
         var array:[LocalAudioModel] = []
         var path = self.getDocumentPath()
         path += "/music"
-//        let dirEnum = fileManager.enumerator(atPath: path)
-        
         let enumerator = FileManager.default.enumerator(atPath: path)
         while let fileName = enumerator?.nextObject() as? String {
             print(fileName)
-
             if let fType = enumerator?.fileAttributes?[FileAttributeKey.type] as? FileAttributeType{
                 switch fType{
                 case .typeRegular:
-                    print("文件")
                     if fileName.contains(".mp3") || fileName.contains(".flac"){
                         let model:LocalAudioModel = LocalAudioModel.init()
                         model.fileName = fileName
                         model.filePath = path+"/"+fileName
+                        self.getAudioInfo(filePath: model.filePath!)
                         array.append(model)
                     }
                 case .typeDirectory:
@@ -61,8 +58,42 @@ class FileTool: NSObject {
                     print("未知类型")
                 }
             }
-
         }
         return array
     }
+
+    // 获取音频相关信息
+    static func getAudioInfo(filePath:String)->(LocalAudioModel){
+        print(filePath)
+        let fileManager = FileManager.default
+        let model = LocalAudioModel.init()
+        do {
+            let dictAtt = try fileManager.attributesOfItem(atPath: filePath)
+            let audioAsset = AVAsset.init(url: URL.init(fileURLWithPath: filePath))
+            print(audioAsset.availableMetadataFormats.count)
+            for format:AVMetadataFormat in audioAsset.availableMetadataFormats {
+                for item:AVMetadataItem in audioAsset.metadata(forFormat: format) {
+                    if (item.commonKey!.rawValue == "title"){
+                        print("歌曲名是\(item.value)")
+                    }
+                    if (item.commonKey!.rawValue == "artist"){
+                        print("歌手是\(item.value)")
+                    }
+                    if (item.commonKey!.rawValue == "albumName"){
+                        print("专辑名\(item.value)")
+                    }
+                    if(item.commonKey!.rawValue == "artwork"){
+                        let dict:[String:Any] = item.value as! [String : Any]
+                        let data = dict["data"]
+                        let image:UIImage = UIImage.init(data: data as! Data)!
+                    }
+                }
+            }
+            let timpFlo:Float = dictAtt[FileAttributeKey(rawValue: "NSFileSize")] as! Float/1024/1024
+        }catch let error{
+            print(error)
+        }
+        return model
+    }
+    
 }

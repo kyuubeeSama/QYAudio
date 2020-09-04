@@ -18,15 +18,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         QTOpenSDK.registerClientId("MmYxYThlY2EtYWMxMi0xMWU4LTkyM2YtMDAxNjNlMDAyMGFk", host: "https://open.staging.qingting.fm", redirectUrl: "http://qttest.qingting.fm")
-        // 判断当前系统，跳转到对应界面
-        let deviceName = UIDevice.current.systemName
-        let deviceVersion = UIDevice.current.systemVersion
-        print("系统名是\(deviceName) 系统版本是\(deviceVersion)")
         let windowScene = scene as! UIWindowScene
         self.window = UIWindow.init(windowScene: windowScene)
         self.window?.backgroundColor = .white
-        if deviceName.contains("Mac") {
-            print("mac系统");
+        if Tool.isPad() {
+            print("平板")
         }else{
             let VC = IndexViewController.init()
             let navgation = UINavigationController(rootViewController: VC);
@@ -63,15 +59,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
+    
+    
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         guard let url = URLContexts.first?.url else {
             return
         }
-        print("音乐文件只是\(url.absoluteString)")
+        print("音乐文件路径是\(url.absoluteString)")
         let fileName = url.lastPathComponent
         var path = url.absoluteString
+        path = self.URLDecoded(string: path)
         if path.contains("file://"){
-            path = path.replacingOccurrences(of: "file:///private", with: "")
+            path = path.replacingOccurrences(of: "file://private/", with: "")
             let localPath = FileTool.getDocumentPath()+"/music/"+fileName
             print("目标保存位置是:\(localPath)")
             let dic = ["fileName":fileName,"filePath":path]
@@ -92,5 +91,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
         }
     }
+    
+    // 中文文件名编码处理
+    func URLDecoded(string:String)->(String){
+        let decodedString:String = string.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        return decodedString
+    }
+    
 }
 

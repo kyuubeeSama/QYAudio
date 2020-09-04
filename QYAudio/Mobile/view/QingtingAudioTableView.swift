@@ -10,7 +10,11 @@ import UIKit
 import QTOpenSDK
 class QingtingAudioTableView: UITableView,UITableViewDelegate,UITableViewDataSource{
     
-    var listArr:[QTORadioChannel] = []
+    var listArr:[QTORadioChannel]?{
+        didSet{
+            self.reloadData()
+        }
+    }
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
         self.delegate = self
@@ -29,11 +33,11 @@ class QingtingAudioTableView: UITableView,UITableViewDelegate,UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        listArr.count
+        return listArr!.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let model:QTORadioChannel = self.listArr[indexPath.row]
+        let model:QTORadioChannel = self.listArr![indexPath.row]
         let cell = UITableViewCell.init(style: .default, reuseIdentifier: "cell")
         cell.textLabel?.text = model.title
         return cell

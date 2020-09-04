@@ -24,7 +24,6 @@
 		A945F3F1245169BE006E5FA3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A945F3F0245169BE006E5FA3 /* Assets.xcassets */; };
 		A945F3F4245169BE006E5FA3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A945F3F2245169BE006E5FA3 /* LaunchScreen.storyboard */; };
 		A945F40F24517A55006E5FA3 /* IndexViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A945F40D24517A55006E5FA3 /* IndexViewController.swift */; };
-		A945F41024517A55006E5FA3 /* IndexViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A945F40E24517A55006E5FA3 /* IndexViewController.xib */; };
 		A98E382024726EAE00871E6E /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A98E381F24726EAE00871E6E /* VideoToolbox.framework */; };
 		A98E3822247273AB00871E6E /* QYRequestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98E3821247273AB00871E6E /* QYRequestData.swift */; };
 		A9EB144B246950310031C778 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB144A246950310031C778 /* BaseViewController.swift */; };
@@ -68,7 +67,6 @@
 		A945F3F5245169BE006E5FA3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A945F3FB24516A51006E5FA3 /* QYAudio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QYAudio.entitlements; sourceTree = "<group>"; };
 		A945F40D24517A55006E5FA3 /* IndexViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexViewController.swift; sourceTree = "<group>"; };
-		A945F40E24517A55006E5FA3 /* IndexViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IndexViewController.xib; sourceTree = "<group>"; };
 		A98E381F24726EAE00871E6E /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/VideoToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		A98E3821247273AB00871E6E /* QYRequestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QYRequestData.swift; sourceTree = "<group>"; };
 		A9EB144A246950310031C778 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
@@ -188,7 +186,6 @@
 			isa = PBXGroup;
 			children = (
 				A945F40D24517A55006E5FA3 /* IndexViewController.swift */,
-				A945F40E24517A55006E5FA3 /* IndexViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -317,7 +314,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A945F41024517A55006E5FA3 /* IndexViewController.xib in Resources */,
 				A9EB146F246B84BF0031C778 /* 宇宙人.mp3 in Resources */,
 				A945F3F4245169BE006E5FA3 /* LaunchScreen.storyboard in Resources */,
 				A9EB146D246AA7E10031C778 /* 1973.flac in Resources */,

@@ -15,7 +15,7 @@ class IndexTitleView: UIView {
 
     var index:NSInteger = 0{
         didSet{
-            // TOOD:实现选中按钮设置
+            // MARK:实现选中按钮设置
             print(360+index)
             let button:UIButton = self.viewWithTag(360+index) as! UIButton
             buttonClick(button: button)
